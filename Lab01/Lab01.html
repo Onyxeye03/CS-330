@@ -13,8 +13,21 @@
     <button onclick="generateArray()">Generate Array</button>
     <script>
         function generateArray() {
-            // ... (your previous code)
+            function fillArrayWithRandomIntegers() {
+                const randomNumbers = [];
 
+                for (let i = 0; i < 5; i++) {
+                    const randomNumber = Math.floor(Math.random() * 100);
+                    randomNumbers.push(randomNumber);
+                }
+
+                return randomNumbers;
+            }
+
+            const filledArray = fillArrayWithRandomIntegers();
+
+            const outputElement = document.getElementById("output");
+            outputElement.innerHTML = filledArray;
             // Show the hidden elements after generating the array
             document.getElementById("array").style.display = "block";
             document.getElementById("mean").style.display = "block";
