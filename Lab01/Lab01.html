@@ -1,35 +1,42 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Array Work</title>
+    <title>Lab 01</title>
+    <style>
+        /* CSS styles go here */
+    </style>
 </head>
 <body>
-    <h1>Array Work</h1>
-    <p id="array" style="display: none;">The array is:</p>
-    <p id="mean" style="display: none;">The mean is:</p>
-    <p id="greater" style="display: none;">Greater:</p>
-    <button onclick="generateArray()">Generate Array</button>
+    <h1>Lab 01</h1>
+
+    <button id="generate-button">Generate Random Numbers</button>
+    <div id="result-container"></div>
+
     <script>
+        const generateButton = document.getElementById('generate-button');
+        const resultContainer = document.getElementById('result-container');
+
+        generateButton.addEventListener('click', generateRandomNumbers);
+
         function generateRandomNumbers() {
-            const arrayLength = 5;
+            const arrayLength = 10;
             const randomNumbers = [];
+
             for (let i = 0; i < arrayLength; i++) {
                 const randomNumber = Math.floor(Math.random() * 100) + 1;
                 randomNumbers.push(randomNumber);
             }
-            return randomNumbers;
+
+            // Clear the previous results
+            resultContainer.innerHTML = '';
+
+            // Display the generated numbers
+            randomNumbers.forEach(number => {
+                const resultElement = document.createElement('p');
+                resultElement.textContent = `Number ${i + 1}: ${number}`;
+                resultContainer.appendChild(resultElement);
+            });
         }
-        resultContainer.innerHTML = '';
-        const arrayString = randomNumbers.join(", ");
-        randomNumbers.forEach(number => {
-            const resultElement = document.createElement('p');
-            resultElement.textContent = `Number ${i + 1}: ${number}`;
-            resultContainer.appendChild(resultElement);
-        });
-        const outputElement = document.getElementById("output");
-        outputElement.innerHTML = filledArray;
-            }
     </script>
 </body>
 </html>
