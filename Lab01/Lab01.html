@@ -4,28 +4,27 @@
   <title>Output Array to HTML</title>
 </head>
 <body>
-    <h1>Array Work</h1>
+    <h2>Array Output</h2><script>
+    function fillArrayWithRandomIntegers() {
+        const randomNumbers = [];
+
+        for (let i = 0; i < 5; i++) {
+            const randomNumber = Math.floor(Math.random() * 100);
+            randomNumbers.push(randomNumber);
+        }
+
+        return randomNumbers;
+    }
+
+    const filledArray = fillArrayWithRandomIntegers();
+
+    const outputElement = document.getElementById("output");
+    outputElement.innerHTML = filledArray;
+</script>
     <p id="count">The count goes here.</p>
     <p id="array">The array is:</p>
     <p id="mean">The mean is:</p>
     <p id="greater">Greater:</p>
     <button onclick="generateArray()">Generate Array</button>
-    <script>
-        function fillArrayWithRandomIntegers() {
-            const randomNumbers = [];
-
-            for (let i = 0; i < 5; i++) {
-                const randomNumber = Math.floor(Math.random() * 100);
-                randomNumbers.push(randomNumber);
-            }
-
-            return randomNumbers;
-        }
-
-        const filledArray = fillArrayWithRandomIntegers();
-
-        const outputElement = document.getElementById("output");
-        outputElement.innerHTML = filledArray;
-    </script>
 </body>
 </html>
