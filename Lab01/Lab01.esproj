@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1184077">
+  <ItemGroup>
+    <None Include=".vscode\index.html" />
+  </ItemGroup>
+</Project>
