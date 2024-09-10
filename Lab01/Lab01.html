@@ -11,18 +11,22 @@
     <p id="greater" style="display: none;">Greater:</p>
     <button onclick="generateArray()">Generate Array</button>
     <script>
-        function generateArray() {
+        function generateRandomNumbers() {
+            const arrayLength = 5;
             const randomNumbers = [];
-            const count = 5;
-            for (let i = 0; i < 5; i++) {
-                const randomNumber = Math.floor(Math.random() * 100);
+            for (let i = 0; i < arrayLength; i++) {
+                const randomNumber = Math.floor(Math.random() * 100) + 1;
                 randomNumbers.push(randomNumber);
             }
-
             return randomNumbers;
         }
+        resultContainer.innerHTML = '';
         const arrayString = randomNumbers.join(", ");
-
+        randomNumbers.forEach(number => {
+            const resultElement = document.createElement('p');
+            resultElement.textContent = `Number ${i + 1}: ${number}`;
+            resultContainer.appendChild(resultElement);
+        });
         const outputElement = document.getElementById("output");
         outputElement.innerHTML = filledArray;
         // Show the hidden elements after generating the array
