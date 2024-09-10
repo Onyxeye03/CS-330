@@ -19,7 +19,7 @@
         generateButton.addEventListener('click', generateRandomNumbers);
 
         function generateRandomNumbers() {
-            const arrayLength = 10;
+            const arrayLength = 5;
             const randomNumbers = [];
 
             for (let i = 0; i < arrayLength; i++) {
@@ -27,10 +27,8 @@
                 randomNumbers.push(randomNumber);
             }
 
-            // Clear the previous results
             resultContainer.innerHTML = '';
 
-            // Display the generated numbers
             randomNumbers.forEach(number => {
                 const resultElement = document.createElement('p');
                 resultElement.textContent = `Number ${i + 1}: ${number}`;
