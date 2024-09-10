@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Date-Time Display</title>
+</head>
+
+<body>
+    <div>
+        <button id="alertButton">Date-Time in Alert Pop-up</button>
+        <button id="pageButton">Date-Time on Page</button>
+        <select id="timeFormat">
+            <option value="12">12 Hours</option>
+            <option value="24">24 Hours</option>
+        </select>
+    </div>
+    <div id="output"></div>
+    <script>
+        const alertButton = document.getElementById('alertButton');
+        const pageButton = document.getElementById('pageButton');
+        const timeFormatSelect = document.getElementById('timeFormat');
+        const outputDiv = document.getElementById('output');
+
+        function formatDate(date) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+            return `${month} ${day}, ${year}`;
+        }
+
+        function formatTime(date, format) {
+            let hours = date.getHours();
+            const minutes = date.getMinutes();
+            const seconds = date.getSeconds();
+
+            if (format === '12') {
+                const amPm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours === 0 ? 12 : hours;
+                return `${hours}:${minutes}:${seconds} ${amPm}`;
+            } else {
+                return `${hours}:${minutes}:${seconds}`;
+            }
+        }
+
+        alertButton.addEventListener('click', () => {
+            const now = new Date();
+            const formattedDate = formatDate(now);
+            const formattedTime = formatTime(now, timeFormatSelect.value);
+            alert(`The date today is: ${formattedDate}\nand the current time is: ${formattedTime}`);
+        });
+
+        pageButton.addEventListener('click', () => {
+            const now = new Date();
+            const formattedDate = formatDate(now);
+            const formattedTime = formatTime(now, timeFormatSelect.value);
+            outputDiv.textContent = `The date today is: ${formattedDate}\nand the current time is: ${formattedTime}`;
+        });
+    </script>
+</body>
+
+</html>
