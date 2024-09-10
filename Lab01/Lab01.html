@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lab 01</title>
-    <style>
-        /* CSS styles go here */
-    </style>
+    <title>Array Work</title>
 </head>
 <body>
-    <h1>Lab 01</h1>
-
-    <button id="generate-button">Generate Random Numbers</button>
-    <div id="result-container"></div>
-
+    <div id="arrayWork">
+        <h2>Array Work</h2>
+        <p>The count goes here.</p>
+        <button onclick="generateArray()">Generate Array</button>
+        <p id="arrayOutput"></p>
+        <p id="meanOutput"></p>
+        <p id="greaterOutput"></p>
+    </div>
     <script>
-        const generateButton = document.getElementById('generate-button');
-        const resultContainer = document.getElementById('result-container');
+        function generateArray() {
+            // Create an empty array
+            const numbers = [];
 
-        generateButton.addEventListener('click', generateRandomNumbers);
-
-        function generateRandomNumbers() {
-            const arrayLength = 5;
-            const randomNumbers = [];
-
-            for (let i = 0; i < arrayLength; i++) {
-                const randomNumber = Math.floor(Math.random() * 100) + 1;
-                randomNumbers.push(randomNumber);
+            // Fill the array with 5 random integers
+            for (let i = 0; i < 5; i++) {
+                numbers.push(Math.floor(Math.random() * 100)); // Generate random numbers between 0 and 99
             }
 
-            resultContainer.innerHTML = '';
+            // Calculate the mean of the array
+            const mean = numbers.reduce((sum, num) => sum + num, 0) / numbers.length;
 
-            randomNumbers.forEach(number => {
-                const resultElement = document.createElement('p');
-                resultElement.textContent = `Number ${i + 1}: ${number}`;
-                resultContainer.appendChild(resultElement);
-            });
+            // Output the array, mean, and elements greater than the mean to the HTML
+            document.getElementById("arrayOutput").textContent = `The array is: ${numbers.join(', ')}`;
+            document.getElementById("meanOutput").textContent = `The mean is: ${mean.toFixed(1)}`;
+
+            const greaterNumbers = numbers.filter(num => num > mean);
+            document.getElementById("greaterOutput").textContent = `Greater: ${greaterNumbers.join(', ')}`;
+
+            // For debugging purposes:
+            console.log("Array:", numbers);
+            console.log("Mean:", mean);
+            console.log("Greater:", greaterNumbers);
         }
     </script>
 </body>
