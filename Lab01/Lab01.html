@@ -12,10 +12,9 @@
     <p id="greater" style="display: none;">Greater:</p>
     <button onclick="generateArray()">Generate Array</button>
     <script>
-        function generateArray() {
-            function fillArrayWithRandomIntegers() {
+            function generateArray() {
                 const randomNumbers = [];
-
+                const count = 5; 
                 for (let i = 0; i < 5; i++) {
                     const randomNumber = Math.floor(Math.random() * 100);
                     randomNumbers.push(randomNumber);
