@@ -13,16 +13,13 @@
         <p id="greaterOutput"></p>
     </div>
     <script>
-        function generateArray() {
-            // Create an empty array
+        function generateArray() { // Generates the random array
             const numbers = [];
 
-            // Fill the array with 5 random integers
             for (let i = 0; i < 5; i++) {
                 numbers.push(Math.floor(Math.random() * 100)); // Generate random numbers between 0 and 99
             }
 
-            // Calculate the mean of the array
             const mean = numbers.reduce((sum, num) => sum + num, 0) / numbers.length;
 
             // Output the array, mean, and elements greater than the mean to the HTML
@@ -32,11 +29,10 @@
             const greaterNumbers = numbers.filter(num => num > mean);
             document.getElementById("greaterOutput").textContent = `Greater: ${greaterNumbers.join(', ')}`;
 
-            // For debugging purposes:
             console.log("Array:", numbers);
             console.log("Mean:", mean);
             console.log("Greater:", greaterNumbers);
         }
     </script>
 </body>
-</html>
+</html> 
