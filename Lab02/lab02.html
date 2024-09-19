@@ -61,22 +61,20 @@
 
 
         const program = createProgram(gl, vertexShader, fragmentShader);
-            const program = gl.createProgram();
+        const program = gl.createProgram();
+        function drawScene(points) {
+            if (program) {
+                gl.useProgram(program);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.useProgram(program);
 
-            function drawScene(points) {
-                if (program) {
-                    gl.useProgram(program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
 
-                    gl.clear(gl.COLOR_BUFFER_BIT);
-                    gl.useProgram(program);
+                gl.enableVertexAttribArray(positionAttributeLocation);
+                gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 
-                    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-                    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
-
-                    gl.enableVertexAttribArray(positionAttributeLocation);
-                    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-
-                    gl.drawArrays(gl.LINE_STRIP, 0, points.length / 2);
+                gl.drawArrays(gl.LINE_STRIP, 0, points.length / 2);
                 } else {
                 console.error("Program not initialized.");
             }
