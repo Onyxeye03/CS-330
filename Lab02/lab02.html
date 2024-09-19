@@ -1,63 +1,139 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Date-Time Display</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koch-like Mountains with WebGL</title>
+    <style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>Koch-like Mountains with WebGL</h1>
+    <canvas id="glCanvas"></canvas>
     <div>
-        <button id="alertButton">Date-Time in Alert Pop-up</button>
-        <button id="pageButton">Date-Time on Page</button>
-        <select id="timeFormat">
-            <option value="12">12 Hours</option>
-            <option value="24">24 Hours</option>
-        </select>
+        <label for="iterations">Recursive steps: </label>
+        <input type="range" id="iterations" min="0" max="5" value="0">
     </div>
-    <div id="output"></div>
+    <p id="iterations-value">0</p>
+    <canvas id="glCanvas"></canvas>
     <script>
-        const alertButton = document.getElementById('alertButton');
-        const pageButton = document.getElementById('pageButton');
-        const timeFormatSelect = document.getElementById('timeFormat');
-        const outputDiv = document.getElementById('output');
+        const canvas = document.getElementById('glCanvas');
+        const gl = canvas.getContext('webgl');
 
-        function formatDate(date) {
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            const day = date.getDate();
-            const month = months[date.getMonth()];
-            const year = date.getFullYear();
-            return `${month} ${day}, ${year}`;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const vertexShader = `
+        attribute vec2 a_position;
+        void main() {
+            gl_Position = vec4(a_position, 0.0, 1.0);
+        }
+        `;
+
+        const fragmentShaderSource = `
+        precision mediump float;
+        void main() {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);  // Red color
+        }
+        `;
+
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+            if (success) {
+                return shader;
+            }
+            console.log(gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+            }
+
+        if (vertexShader && fragmentShader) {
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+        } else {
+            console.error("Failed to create shaders.");
+            return null;
         }
 
-        function formatTime(date, format) {
-            let hours = date.getHours();
-            const minutes = date.getMinutes();
-            const seconds = date.getSeconds();
+        const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+        const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
 
-            if (format === '12') {
-                const amPm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours === 0 ? 12 : hours;
-                return `${hours}:${minutes}:${seconds} ${amPm}`;
-            } else {
-                return `${hours}:${minutes}:${seconds}`;
+
+        const program = createProgram(gl, vertexShader, fragmentShader);
+            const program = gl.createProgram();
+
+            function drawScene(points) {
+                if (program) {
+                    gl.useProgram(program);
+
+                    gl.clear(gl.COLOR_BUFFER_BIT);
+                    gl.useProgram(program);
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+
+                    gl.enableVertexAttribArray(positionAttributeLocation);
+                    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+                    gl.drawArrays(gl.LINE_STRIP, 0, points.length / 2);
+                } else {
+                console.error("Program not initialized.");
             }
         }
 
-        alertButton.addEventListener('click', () => {
-            const now = new Date();
-            const formattedDate = formatDate(now);
-            const formattedTime = formatTime(now, timeFormatSelect.value);
-            alert(`The date today is: ${formattedDate}\nand the current time is: ${formattedTime}`);
+        const positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+        function kochLikeMountain(a, b, depth) {
+            if (depth === 0) {
+                return [a, b];
+            }
+
+            const len = [(b[0] - a[0]) / 3, (b[1] - a[1]) / 3];
+            const p1 = [a[0] + len[0], a[1] + len[1]];
+            const p2 = [a[0] + 2 * len[0], a[1] + 2 * len[1]];
+
+            const peak = [
+                (p1[0] + p2[0]) / 2,
+                p1[1] + Math.sqrt(3) * (p2[0] - p1[0]) / 2
+            ];
+
+            return [
+                ...kochLikeMountain(a, p1, depth - 1),
+                ...kochLikeMountain(p1, peak, depth - 1),
+                ...kochLikeMountain(peak, p2, depth - 1),
+                ...kochLikeMountain(p2, b, depth - 1)
+            ];
+        }
+
+        function update() {
+��        const iterations = Number(document.getElementById('iterations').value);
+��        const points = kochLikeMountain([-0.9, 0], [0.9, 0], iterations);
+��        drawScene(points.flat());
+��        requestAnimationFrame(update);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+��        document.getElementById('iterations').addEventListener('input', function() {
+����        console.log("Slider moved!");
+����        update();
+��        });
         });
 
-        pageButton.addEventListener('click', () => {
-            const now = new Date();
-            const formattedDate = formatDate(now);
-            const formattedTime = formatTime(now, timeFormatSelect.value);
-            outputDiv.textContent = `The date today is: ${formattedDate}\nand the current time is: ${formattedTime}`;
-        });//Used https://suwebdev.github.io/WATS-4000-gitbook/application-architecture/core-concept-separation-of-concerns.html for help
-    </script>
+        update();</script>
 </body>
-
 </html>

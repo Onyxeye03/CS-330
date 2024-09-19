@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koch-like Mountains with WebGL</title>
-    canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: block;
-}
+    <style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <h1>Koch-like Mountains with WebGL</h1>
@@ -20,23 +22,19 @@
         <label for="iterations">Recursive steps: </label>
         <input type="range" id="iterations" min="0" max="5" value="0">
     </div>
-    
-    <script>
-        const canvas = document.getElementById('glCanvas');
+
+    <script>const canvas = document.getElementById('glCanvas');
         const gl = canvas.getContext('webgl');
 
-        if (!gl) {
-            alert('Unable to initialize WebGL. Your browser may not support it.');
-            throw new Error('WebGL not supported');
-        }
-
+     window.addEventListener('resize', function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
+        update(); // Update the scene after resizing
+    });
         const vertexShaderSource = `
         attribute vec2 a_position;
         void main() {
-            gl_Position = vec4(a_position, 0.0, 1.0);
+            gl_Position = vec4(a_position, 0.0, 1.0);
         }
         `;
 
@@ -47,32 +45,32 @@
         }
         `;
 
-            function createShader(gl, type, source) {
-        const shader = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-        if (success) {
-        return shader;
-        }
-        console.log(gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null; // Add return null in case of failure
-        }
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+            if (success) {
+            return shader;
+            }
+            console.log(gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null; // Add return null in case of failure
+            }
 
         function createProgram(gl, vertexShader, fragmentShader) {
-        const program = gl.createProgram();
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
-        gl.linkProgram(program);
-        const success = gl.getProgramParameter(program, gl.LINK_STATUS);
-        if (success) {
-        return program;
-        }
-        console.log(gl.getProgramInfoLog(program));
-        gl.deleteProgram(program);
-        return null; // Add return null in case of failure
-        }
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            const success = gl.getProgramParameter(program, gl.LINK_STATUS);
+            if (success) {
+            return program;
+            }
+            console.log(gl.getProgramInfoLog(program));
+            gl.deleteProgram(program);
+            return null; // Add return null in case of failure
+            }
 
         const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
         const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
@@ -105,30 +103,40 @@
             ];
         }
 
-        function drawScene(points) {
-            gl.clearColor(1.0, 1.0, 1.0, 1.0);  // White background
-            gl.clear(gl.COLOR_BUFFER_BIT);
+       function drawScene(points) {
+        gl.clear(gl.COLOR_BUFFER_BIT); // Clear the canvas
+        gl.useProgram(program);
 
-            gl.useProgram(program);
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
 
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(positionAttributeLocation);
+        gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 
-            gl.enableVertexAttribArray(positionAttributeLocation);
-            gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-
-            gl.drawArrays(gl.LINE_STRIP, 0, points.length / 2);
+        // Re-draw the updated buffer
+        gl.drawArrays(gl.LINE_STRIP, 0, points.length / 2);
         }
 
         function update() {
-            const iterations = document.getElementById('iterations').value;
-            const points = kochLikeMountain([-0.9, 0], [0.9, 0], iterations);
-            drawScene(points.flat());
+        console.log('Update function called'); // Debugging
+
+        const iterations = Number(document.getElementById('iterations').value);
+        console.log('Slider value (iterations):', iterations); // Debug slider value
+
+        // Compute new points for the Koch-like mountain
+        const points = kochLikeMountain([-0.9, 0], [0.9, 0], iterations);
+        console.log('Generated points:', points);
+
+        // Draw the updated points
+        drawScene(points.flat());
         }
 
-        document.getElementById('iterations').addEventListener('input', update);
 
+
+        document.getElementById('iterations').addEventListener('input', function() {
+        console.log("Slider moved!");
         update();
+        });
     </script>
 </body>
 </html>
