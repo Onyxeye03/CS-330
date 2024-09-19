@@ -4,18 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koch-like Mountains with WebGL</title>
-    <style>
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: block;
-        }
-    </style>
 </head>
-
 <body>
     <h1>Koch-like Mountains with WebGL</h1>
     <canvas id="glCanvas"></canvas>
@@ -32,7 +21,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const vertexShader = `
+        const vertexShaderSource = `
         attribute vec2 a_position;
         void main() {
             gl_Position = vec4(a_position, 0.0, 1.0);
@@ -121,19 +110,30 @@
         }
 
         function update() {
-��        const iterations = Number(document.getElementById('iterations').value);
-��        const points = kochLikeMountain([-0.9, 0], [0.9, 0], iterations);
-��        drawScene(points.flat());
-��        requestAnimationFrame(update);
+            const iterations = Number(document.getElementById('iterations').value);
+            const points = kochLikeMountain([-0.9, 0], [0.9, 0], iterations);
+            drawScene(points.flat());
+            requestAnimationFrame(update);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-��        document.getElementById('iterations').addEventListener('input', function() {
-����        console.log("Slider moved!");
-����        update();
-��        });
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('iterations').addEventListener('input', function () {
+            console.log("Slider moved!");
+            update();
+            });
         });
 
-        update();</script>
+        update();
+        <style>
+            canvas {
+                position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+    }
+        </style>
+    </script>
 </body>
 </html>
