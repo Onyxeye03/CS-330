@@ -1,47 +1,4 @@
-<!DOCTYPE html>
-<HTML>
-<HEAD>
-    <meta http-equiv="Content-Type"
-          content="text/html;charset=utf-8">
-    <title>HW02 - Dylan S</title>
-</HEAD>
-<BODY>
-    <canvas id="gl-canvas" width="512" height="512" style="border">
-        Browser unsupported
-    </canvas>
-    <div>
-        recursive steps 0 <input id="slider"
-                                 type="range"
-                                 min="0" max="4" step="1" value="0" />
-        4
-    </div>
-    <script id="vertex-shader"
-            type="x-shader/x-vertex">
-        #version 300 es
-        in vec4 aPosition;
-        void
-        main()
-        {
-        gl_PointSize = 4.0;
-        gl_Position = aPosition;
-        }
-    </script>
-    <script id="fragment-shader"
-            type="x-shader/x-fragment">
-        #version 300 es
-        precision mediump float;
-        out vec4 fColor;
-        void
-        main()
-        {
-        fColor = vec4(1.0,0.0,0.0,1.0);
-        }
-    </script>
-    <script type="text/javascript" src="Common/utility.js"></script>
-    <script type="text/javascript" src="Common/initShaders.js"></script>
-    <script type="text/javascript" src="Common/MVnew.js"></script>
-
-<script>"use strict";
+<script> "use strict";
 var canvas;
 var gl;
 var positions;
@@ -118,6 +75,7 @@ positions.push(pos2);
 divFlake(left,pos1,count);
 divFlake(pos2,right,count);
 }
+}
 function render() {
 //var vertices=[
 //vec2( -1.00 , 0.00 ),
@@ -148,7 +106,6 @@ gl.clear( gl.COLOR_BUFFER_BIT );
 gl.drawArrays( gl.LINES, 0,
 positions.length );
 positions = [];
-}</script>
-</BODY>
-</HTML>
+}
 
+</script>
