@@ -7,7 +7,7 @@
 </HEAD>
 <BODY>
     <canvas id="gl-canvas" width="512" height="512" style="border">
-        Browser unsupported
+        
     </canvas>
     <div>
         recursive steps 0 <input id="slider"
@@ -26,8 +26,7 @@
             gl_Position = aPosition;
         }
     </script>
-    <script id="fragment-shader"
-            type="x-shader/x-fragment">
+    <script id="fragment-shader" type="x-shader/x-fragment">
         #version 300 es
         precision mediump float;
         out vec4 fColor;
@@ -38,7 +37,7 @@
     <script type="text/javascript" src="Common/utility.js"></script>
     <script type="text/javascript" src="Common/initShaders.js"></script>
     <script type="text/javascript" src="Common/MVnew.js"></script>
-
+    
     <script>"use strict";
     var canvas;
     var gl;
@@ -98,9 +97,17 @@
     canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
 
-    var program = initShaders( gl, "vertex-shader", "fragment-shader" );
-    gl.useProgram( program );
+    var program = initShaders(gl, "vertex-shader", "fragment-shader");
+    gl.useProgram(program);
 
+    var bufferId = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW);
+
+
+    function flatten(arr) {
+      return arr.reduce((acc, val) => acc.concat(val), []);
+    }
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW );
@@ -145,34 +152,33 @@
     }
     }
     function render() {
-    //var vertices=[
-    //vec2( -1.00 , 0.00 ),
-    //vec2( -0.33 , 0.00 ),
-    //vec2( -0.33 , 0.00 ),
-    //vec2( 0.00 , 0.00 ),
-    //vec2( 0.00 , 0.00 ),
-    //vec2( 0.33 , 0.00 ),
-    //vec2( 0.33 , 0.00 ),
-    //vec2( 1.00 , 0.00 )
-    //];
+    var vertices=[
+    vec2( -1.00 , 0.00 ),
+    vec2( -0.33 , 0.00 ),
+    vec2( -0.33 , 0.00 ),
+    vec2( 0.00 , 0.00 ),
+    vec2( 0.00 , 0.00 ),
+    vec2( 0.33 , 0.00 ),
+    vec2( 0.33 , 0.00 ),
+    vec2( 1.00 , 0.00 )
+    ];
     positions = [];
-    //positions.push( vertices[0] );
-    //positions.push( vertices[1] );
-    //positions.push( vertices[2] );
-    //positions.push( vertices[3] );
-    //positions.push( vertices[4] );
-    //positions.push( vertices[5] );
-    //positions.push( vertices[6] );
-    //positions.push( vertices[7] );
+    positions.push( vertices[0] );
+    positions.push( vertices[1] );
+    positions.push( vertices[2] );
+    positions.push( vertices[3] );
+    positions.push( vertices[4] );
+    positions.push( vertices[5] );
+    positions.push( vertices[6] );
+    positions.push( vertices[7] );
     var left = vec2( -1.0 , 0.0);
     var right = vec2( 1.0 , 0.0);
     divFlake(left,right,numTimesToSubdivide);
-    //divFlake(left,right,1);
+    divFlake(left,right,1);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0,
     flatten(positions));
     gl.clear( gl.COLOR_BUFFER_BIT );
-    gl.drawArrays( gl.LINES, 0,
-    positions.length );
+    gl.drawArrays( gl.LINES, 0, positions.length );
     positions = [];
     }
     </script>
