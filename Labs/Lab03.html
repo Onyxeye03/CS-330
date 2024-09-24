@@ -3,8 +3,6 @@
 <head>
     <title>Point Renderer</title>
     <script src="Lab03Points.js"></script>
-    <script src="gl-src/vec2.js"></script>
-   
 </head>
 <body>
     <canvas id="glCanvas" width="512" height="512"></canvas>
@@ -19,7 +17,7 @@
     <label for="colorSliderB">Blue:</label>
     <input type="range" id="colorSliderB" min="0" max="255" value="0">
     <script>
-        // Get WebGL context
+        // WebGL context
         var canvas = document.getElementById('glCanvas');
         var gl = canvas.getContext('webgl');
 
@@ -29,8 +27,8 @@
         uniform float uPointSize;
 
         void main() {
-        gl_Position = vec4(aPosition, 0.0, 1.0);
-        gl_PointSize = uPointSize;
+          gl_Position = vec4(aPosition, 0.0, 1.0);
+          gl_PointSize = uPointSize;
         }
         `;
 
@@ -40,7 +38,7 @@
         uniform vec3 uColor;
 
         void main() {
-        gl_FragColor = vec4(uColor, 1.0);
+          gl_FragColor = vec4(uColor, 1.0);
         }
         `;
 
@@ -54,9 +52,18 @@
         gl.compileShader(fragmentShader);
 
         var program = gl.createProgram();
+        // Attach Shader
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
         gl.linkProgram(program);
+
+        
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.error('Error linking program: ' + gl.getProgramInfoLog(program));
+
+        }
+        gl.useProgram(program);
 
         // Get attribute and uniform locations
         var aPositionLocation = gl.getAttribLocation(program, 'aPosition');
@@ -65,28 +72,28 @@
 
         // Define points
         var points = [
-            vec2.fromValues(-0.5, -0.5),
-            vec2.fromValues(0.0, 0.5),
-            vec2.fromValues(0.5, -0.5)
+            -0.5, -0.5,
+            0.0, 0.5,
+            0.5, -0.5
         ];
 
         // Create buffer for points
         var pointBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, pointBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points.flat()), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
 
-        // Enable attribute array
+   
         gl.enableVertexAttribArray(aPositionLocation);
         gl.vertexAttribPointer(aPositionLocation, 2, gl.FLOAT, false, 0, 0);
 
-        // Set initial point size and color
+
         gl.uniform1f(uPointSizeLocation, 5.0);
         gl.uniform3fv(uColorLocation, [1.0, 0.0, 0.0]);
 
-        // Render points
+
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.POINTS, 0, points.length);
+        gl.drawArrays(gl.POINTS, 0, points.length / 2);
 
         // Update point size and color based on slider values
         var pointSizeSlider = document.getElementById('pointSizeSlider');
@@ -96,25 +103,25 @@
 
         pointSizeSlider.addEventListener('input', function () {
             gl.uniform1f(uPointSizeLocation, parseFloat(pointSizeSlider.value));
-            gl.drawArrays(gl.POINTS, 0, points.length);
+            gl.drawArrays(gl.POINTS, 0, points.length / 2);
         });
 
         colorSliderR.addEventListener('input', function () {
             var red = parseFloat(colorSliderR.value) / 255.0;
             gl.uniform3fv(uColorLocation, [red, 0.0, 0.0]);
-            gl.drawArrays(gl.POINTS, 0, points.length);
+            gl.drawArrays(gl.POINTS, 0, points.length / 2);
         });
 
         colorSliderG.addEventListener('input', function () {
             var green = parseFloat(colorSliderG.value) / 255.0;
             gl.uniform3fv(uColorLocation, [0.0, green, 0.0]);
-            gl.drawArrays(gl.POINTS, 0, points.length);
+            gl.drawArrays(gl.POINTS, 0, points.length / 2);
         });
 
         colorSliderB.addEventListener('input', function () {
             var blue = parseFloat(colorSliderB.value) / 255.0;
             gl.uniform3fv(uColorLocation, [0.0, 0.0, blue]);
-            gl.drawArrays(gl.POINTS, 0, points.length);
+            gl.drawArrays(gl.POINTS, 0, points.length / 2);
         });
     </script>
 </body>
