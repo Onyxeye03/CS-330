@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+
+<title>Lab 07 Rotating Tri</title>
+</head>
+
+<body>
+    <button id="Rotation">Toggle Rotation On-Off</button>
+
+    <canvas id="gl-canvas" width="512" height="512"> </canvas>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+
+        in vec4 aPosition;
+        uniform float uTheta;
+
+        void main()
+        {
+            float s = sin(uTheta);
+            float c = cos(uTheta);
+
+            gl_Position.x = -s*aPosition.y + c*aPosition.x;
+            gl_Position.y =  s*aPosition.x + c*aPosition.y;
+            gl_Position.z = 0.0;
+            gl_Position.w = 1.0;
+
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+
+        precision mediump float;
+        uniform vec4 aColor;
+        out vec4 fColor;
+
+        void main()
+        {
+            fColor = aColor;
+        }
+    </script>
+
+    <script src="../Common/initShaders.js"></script>
+    <script src="../Common/MVnew.js"></script>
+    <script src="Lab07RotTriColor.js"></script>
+
+</body>
+</html>
