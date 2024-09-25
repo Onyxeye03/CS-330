@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<HTML>
+
+<HEAD>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Lab 05</title>
+
+</HEAD>
+
+<BODY>
+
+
+<canvas id="gl-canvas" width="512" height="512" "style=border >
+    Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+in vec4 aPosition;
+out vec4 vColor;
+void
+main()
+{
+    gl_PointSize = 20.0;
+    gl_Position = aPosition;
+    vColor = vec4(1.0,0.0,0.0,1.0);
+    vColor = vec4((1.0+aPosition.xyz)/2.0,1.0);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+    #version 300 es
+    precision mediump float;
+    in vec4 vColor;
+    out vec4 fColor;
+    void
+    main()
+    {
+        fColor = vColor;
+        gl_FragColor = vec4(1.0,0.0,0.0,1.0);
+    }
+</script>
+<script type="text/javascript" src="../Common/utility.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Lab05.js"></script>
+</BODY>
+</HTML>
