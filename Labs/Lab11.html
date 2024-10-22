@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<HTML>
+
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>Lab 11 Concat Transform</title>
+
+</HEAD>
+
+<BODY>
+
+<canvas id="gl-canvas" width="512" height="512" "style=border >
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+<button id= "Transform">Transform</button>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+in vec4 aPosition;
+uniform vec3 uTheta;
+uniform float uTranslate;
+uniform float uScale;
+void
+main()
+{
+    vec3 angles = radians(uTheta);
+    vec3 c = cos(angles);
+    vec3 s = sin(angles);
+
+    // Rotate on Z-axis: this matrix is column-major
+    mat4 rz = mat4(  c.z,  s.z, 0.0, 0.0,
+		    -s.z,  c.z, 0.0, 0.0,
+		     0.0,  0.0, 1.0, 0.0,
+		     0.0,  0.0, 0.0, 1.0);
+
+    // Matrix Tx
+    // Translate in x direction: this matrix is column-major
+    // note that uTranslate is a uniform variable already defined in the 
+    // Lab11ConcatTransform.js code
+    //mat4 Tx = mat4(
+
+    // Matrix Sx
+    // Scale in x direction, the fixed point is the y-axis: this matrix is column-major
+    // note that uScale is a uniform variable already defined in the 
+    // Lab11ConcatTransform.js code
+    //mat4 Sx = mat4(
+
+    //gl_Position = aPosition;
+    //gl_Position = rz * aPosition;
+    //gl_Position = Tx * aPosition;
+    gl_Position = rz * Tx * aPosition;
+    gl_Position = Tx * rz * aPosition;
+    //gl_Position = Sx * aPosition;
+    //gl_Position = Sx * Tx * aPosition;
+    //gl_Position = Sx * Tx * aPosition;
+    //gl_Position = Sx * Tx * rz * aPosition;
+    //gl_Position = Sx * rz * Tx * aPosition;
+    //gl_Position = rz * Tx * Sx * aPosition;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision mediump float;
+out vec4 fColor;
+void
+main()
+{
+  fColor = vec4(1.0,0.0,0.0,1.0);
+}
+</script>
+<script type="text/javascript" src="../Common/utility.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Lab11ConcatTransform.js"></script>
+
+</BODY>
+</HTML>
