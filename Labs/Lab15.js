@@ -95,7 +95,7 @@ var materialAmbient  = vec4(0.19225 , 0.19225 , 0.19225 , 1.0);
 var materialDiffuse  = vec4(0.50754 , 0.50754 , 0.50754 , 1.0);
 var materialSpecular  = vec4(0.508273 , 0.508273 , 0.508273 , 1.0);
 var materialShininess = 51.2;
-//
+*/
 
 // polished silver
 /*Light gray, large specular highlight, very reflective
