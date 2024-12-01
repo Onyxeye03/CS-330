@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<HTML>
+
+<HEAD>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Lab 17 Texture Settings KEY</title>
+
+</HEAD>
+
+<BODY>
+
+<canvas id="gl-canvas" width="512" height="512" "style=border >
+    Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+    #version 300 es
+
+    in vec4 aPosition;
+    in vec4 aColor;
+    in vec2 aTexCoord;
+
+    out vec4 vColor;
+    out vec2 vTexCoord;
+
+    void
+    main()
+    {
+        vColor = aColor;
+        vTexCoord = aTexCoord;
+        gl_Position = aPosition;
+    }
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+    #version 300 es
+    precision mediump float;
+
+    in vec4 vColor;
+    in vec2 vTexCoord;
+
+    out vec4 fColor;
+
+    uniform sampler2D uTextureMap;
+
+    void
+    main()
+    {
+        //fColor = vColor;
+        // initial, masked, underlying color will show
+        fColor = vColor*texture(uTextureMap, vTexCoord);
+        // not masked, will overwrite underlying colored triangle
+        //fColor = texture(uTextureMap, vTexCoord);
+    }
+</script>
+<script type="text/javascript" src="../Common/utility.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Lab17TextureSettings.js"></script>
+
+</BODY>
+</HTML>
