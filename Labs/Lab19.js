@@ -15,25 +15,6 @@ var texture;
 var program;
 
 var texSize = 64;
-/*
-// Create a checkerboard pattern using floats
-var image1 = new Array()
-    for (var i =0; i<texSize; i++)  image1[i] = new Array();
-    for (var i =0; i<texSize; i++)
-        for ( var j = 0; j < texSize; j++)
-           image1[i][j] = new Float32Array(4);
-    for (var i =0; i<texSize; i++) for (var j=0; j<texSize; j++) {
-        var c = (((i & 0x8) == 0) ^ ((j & 0x8) == 0));
-        image1[i][j] = [c, c, c, 1];
-    }
-
-// Convert floats to ubytes for texture
-var image2 = new Uint8Array(4*texSize*texSize);
-    for (var i = 0; i < texSize; i++)
-        for (var j = 0; j < texSize; j++)
-           for(var k =0; k<4; k++)
-                image2[4*texSize*i+4*j+k] = 255*image1[i][j][k];
-*/
 var texCoordsArray = [];
 
 // perpendicular texture w/isoceles triangle
@@ -55,7 +36,16 @@ var vertexColors = [
 window.onload = init;
 
 function configureTexture( image ) {
+    texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB,
+         gl.RGB, gl.UNSIGNED_BYTE, image);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
+                      gl.NEAREST_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
+    gl.uniform1i(gl.getUniformLocation(program, "uTextureMap"), 0);
 }
 
 function triangle (a,b,c,triNum)
@@ -137,7 +127,8 @@ function init()
     gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(texCoordLoc);
 
-
+    var image = document.getElementById("texImage");
+    configureTexture(image);
 
     thetaLoc = gl.getUniformLocation(program, "uTheta");
 
