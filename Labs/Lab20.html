@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<HTML>
+
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>Lab 20 Blending</title>
+
+</HEAD>
+
+<BODY>
+
+<canvas id="gl-canvas" width="512" height="512" "style=border >
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+
+<button id = "Button">Toggle</button>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition;
+in vec4 aColor;
+
+out vec4 vColor;
+
+void
+main()
+{
+  gl_Position = aPosition;
+  vColor = aColor;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision mediump float;
+
+in vec4 vColor;
+out vec4 fColor;
+
+void
+main()
+{
+  fColor = vColor;
+}
+</script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Lab20Blending.js"></script>
+
+</BODY>
+</HTML>
