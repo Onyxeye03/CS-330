@@ -329,7 +329,7 @@ function init() {
     //
     //  Load shaders and initialize attribute buffers
     //
-    program = InitShaders( gl, "vertex-shader", "fragment-shader");
+    program = initShaders( gl, "vertex-shader", "fragment-shader");
 
     gl.useProgram(program);
 
